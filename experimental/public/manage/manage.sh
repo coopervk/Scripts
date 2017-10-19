@@ -7,10 +7,16 @@ brightness() {
 	echo "Brightness range: 0 - $(cat /sys/class/backlight/nv_backlight/max_brightness)"
 	echo -n "Brightness (q to quit): "
 	read INPUT
-	if [ "$INPUT" == "q" || "$INPUT" == "Q" ]
+	if [ "$INPUT" ] && [ "$INPUT" == "q" ]
 	then
-		sudo su -c "echo '$INPUT' > /sys/class/backlight/nv_backlight/brightness"
-		echo ""
+		echo "Quit..."
+		sleep 0.1s
+	else
+		if [ "$INPUT" ] && [ "$INPUT" -eq "$INPUT " ]
+		then
+			sudo su -c "echo '$INPUT' > /sys/class/backlight/nv_backlight/brightness"
+		fi
+		clear
 		brightness
 	fi
 }
@@ -18,9 +24,18 @@ brightness() {
 battery() {
 	cat /sys/class/power_supply/BAT0/status
 	cat /sys/class/power_supply/BAT0/capacity
-	echo "Press enter to continue..."
-	read
-	#sleep 1s
+	echo -n "Enter to refresh, q to quit: "
+	read INPUT
+	if [ "$INPUT" ] && [ "$INPUT" == "q" ]
+	then
+		echo "Quit..."
+		sleep 0.1s
+	else
+		echo "Refresh..."
+		sleep 0.1s
+		clear
+		battery
+	fi
 }
 
 # Main code
@@ -48,7 +63,7 @@ do
 		"s")	echo "sound source";;
 
 		"bt")	echo "bluetooth";;
-
+ 
 		"la")	echo "launch app";;
 
 		"scr")	echo "screen";;

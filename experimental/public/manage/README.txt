@@ -96,4 +96,5 @@ V.0.4.1
 -Script now exists
 -Battery and brightness now added
 -Add README
--Brightness quit is q instead of enter
+-Brightness and battery quit is q instead of enter, brightness checks for number in order to echo change brightness
+
