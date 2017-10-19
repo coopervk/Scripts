@@ -91,8 +91,9 @@ cvankampen@hawk.iit.edu), or my Telegram (gdynamics).
 --------------------
 OFFICIAL PATCH NOTES
 
-V.0.4.0
+V.0.4.1
 
 -Script now exists
 -Battery and brightness now added
 -Add README
+-Brightness quit is q instead of enter

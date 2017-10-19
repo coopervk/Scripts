@@ -5,9 +5,9 @@
 brightness() {
 	echo "Current brightness: $(cat /sys/class/backlight/nv_backlight/brightness)"
 	echo "Brightness range: 0 - $(cat /sys/class/backlight/nv_backlight/max_brightness)"
-	echo -n "Brightness (enter to quit): "
+	echo -n "Brightness (q to quit): "
 	read INPUT
-	if [ "$INPUT" ]
+	if [ "$INPUT" == "q" || "$INPUT" == "Q" ]
 	then
 		sudo su -c "echo '$INPUT' > /sys/class/backlight/nv_backlight/brightness"
 		echo ""
