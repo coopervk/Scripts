@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Shell functions
+# Functions
 
 brightness() {
 	echo "Current brightness: $(cat /sys/class/backlight/nv_backlight/brightness)"
@@ -23,7 +23,7 @@ battery() {
 	#sleep 1s
 }
 
-# Shell main
+# Main code
 echo "Requesting sudo privileges..."
 sudo echo ""
 
