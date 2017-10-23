@@ -5,6 +5,7 @@ INTERFACE="wlp3s0"                                      # The name of your wirel
 MACADDR="$(cat /sys/class/net/$INTERFACE/address)"      # The MAC address you wish your wireless to use
 DHCPCLIENT=""                                   				# The command which represents your DHCP service
 WPACONFPATH="/etc/wpa_supplicant/wpaiit.conf"           # If changed after script has been run, there may be remaining garbage artifacts.
+NETCOM=""
 
 # Start script body
 printf "Script starting...\n\n"
@@ -51,6 +52,16 @@ then
 	printf "\n"
 fi	
 
+if ! [ "$NETCOM" ]
+then
+	printf "You have not specified a network command toolset! Attempting autodetection..."
+	if ! [ "$(sudo ip -V | grep 'command not found')" ]
+	then
+		NETCOM="ip"
+	fi
+	printf "\n\n"
+fi
+
 # Ending previous instances in order to remove chance of errors
 printf "Killing previous instances of wpa_supplicant and $DHCPCLIENT\n"
 sudo killall wpa_supplicant
@@ -58,13 +69,16 @@ sudo killall $DHCPCLIENT
 printf "\n"
 
 # Resetting the interface and giving it its MAC
-printf "Setting wireless interface down\n"
-sudo ip l s $INTERFACE down
-printf "Changing MAC address of interface to $MACADDR\n"
-sudo ip l s $INTERFACE a "$MACADDR"
-printf "Putting interface up\n"
-sudo ip l s $INTERFACE up
-printf "\n"
+if [ "$NETCOM" == "ip" ]
+then
+	printf "Setting wireless interface down\n"
+	sudo ip l s $INTERFACE down
+	printf "Changing MAC address of interface to $MACADDR\n"
+	sudo ip l s $INTERFACE a "$MACADDR"
+	printf "Putting interface up\n"
+	sudo ip l s $INTERFACE up
+	printf "\n"
+fi
 
 # Starting up wpa supplicant
 printf "Starting wpa supplicant\n"

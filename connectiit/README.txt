@@ -1,6 +1,6 @@
 VERSION
 
-V.1.4.0
+V.1.6.0
 
 --------------------
 DISCLAIMER
@@ -142,6 +142,6 @@ cvankampen@hawk.iit.edu), or my Telegram (gdynamics).
 --------------------
 OFFICIAL PATCH NOTES
 
-V.1.4.0
+V.1.6.0
 
--Script now has automatic DHCP client detection (for just dhclient and dhcpcd since they are the most common) if you do not specify a client
+-First step of attempting to add support for ifconfig
