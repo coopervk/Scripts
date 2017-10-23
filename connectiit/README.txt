@@ -141,6 +141,6 @@ cvankampen@hawk.iit.edu), or my Telegram (gdynamics).
 --------------------
 OFFICIAL PATCH NOTES
 
-V.1.0.0
+V.1.2.0
 
--Script now exists
+-Script is now BASH instead of just shell.

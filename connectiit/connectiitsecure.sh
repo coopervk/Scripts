@@ -1,71 +1,71 @@
-#!/bin/sh
+#!/bin/bash
 
 # Variables that the user may change as they desire
-INTERFACE=""                                            # The name of your wireless interface
+INTERFACE="wlp3s0"                                            # The name of your wireless interface
 MACADDR="$(cat /sys/class/net/$INTERFACE/address)"      # The MAC address you wish your wireless to use
 DHCPCLIENT="dhclient"                                   # The command which represents your DHCP service
 DHCPCLIENTOPTS="-v"                                     # The appropriate arguments for the dhcp. Empty if none.
 WPACONFPATH="/etc/wpa_supplicant/wpaiit.conf"           # If changed after script has been run, there may be remaining garbage artifacts.
 
 # Start script body
-echo "Script starting...\n"
+printf "Script starting...\n\n"
 
-echo "Requesting root privileges..."
-sudo echo ""
+printf "Requesting root privileges...\n"
+sudo printf "\n"
 
 if [ ! -f "$WPACONFPATH" ]
 then
-	echo "No configuration file was found at $WPACONFPATH"
+	printf "No configuration file was found at $WPACONFPATH\n"
 
 	# Start user input
-	echo "Making IIT conf file..."
-	echo -n "Username: "
+	printf "Making IIT conf file...\n"
+	printf "Username: "
 	read USERNAME
 	stty_orig=`stty -g`             # Save settings of the terminal.
 	stty -echo                      # Turn off echo while typing for password.
-	echo -n "Password: "
+	printf "Password: "
 	read PASSWORD
 	stty $stty_orig                 # Restore terminal settings.
-	echo ""
+	printf "\n\n"
 
 	# Start configuration file generation
 	sudo touch $WPACONFPATH
 	sudo chown $(whoami) $WPACONFPATH
-	echo "ctrl_interface=/var/run/wpa_supplicant\n\nnetwork={\n\tssid=\"IIT-Secure\"\n\tkey_mgmt=WPA-EAP IEEE8021X\n\teap=PEAP\n\tauth_alg=OPEN\n\tidentity=\"$USERNAME\"\n\tpassword=\"$PASSWORD\"\n\tphase1=\"tls_disable_tlsv1_2=1\"\n\tphase2=\"auth=MSCHAPv2\"\n\tpriority=9\n}" > $WPACONFPATH
+	printf "ctrl_interface=/var/run/wpa_supplicant\n\nnetwork={\n\tssid=\"IIT-Secure\"\n\tkey_mgmt=WPA-EAP IEEE8021X\n\teap=PEAP\n\tauth_alg=OPEN\n\tidentity=\"$USERNAME\"\n\tpassword=\"$PASSWORD\"\n\tphase1=\"tls_disable_tlsv1_2=1\"\n\tphase2=\"auth=MSCHAPv2\"\n\tpriority=9\n}" > $WPACONFPATH
 fi
 
 # Ending previous instances in order to remove chance of errors
-echo "Killing previous instances of wpa_supplicant and $DHCPCLIENT"
+printf "Killing previous instances of wpa_supplicant and $DHCPCLIENT\n"
 sudo killall wpa_supplicant
 sudo killall $DHCPCLIENT
-echo ""
+printf "\n"
 
 # Resetting the interface and giving it its MAC
-echo "Setting wireless interface down"
+printf "Setting wireless interface down\n"
 sudo ip l s $INTERFACE down
-echo "Changing MAC address of interface to $MACADDR"
+printf "Changing MAC address of interface to $MACADDR\n"
 sudo ip l s $INTERFACE a "$MACADDR"
-echo "Putting interface up"
+printf "Putting interface up\n"
 sudo ip l s $INTERFACE up
-echo ""
+printf "\n"
 
 # Starting up wpa supplicant
-echo "Starting wpa supplicant"
+printf "Starting wpa supplicant\n"
 sudo wpa_supplicant -B -i $INTERFACE -c $WPACONFPATH
-echo ""
+printf "\n"
 
 # Using your DHCP Client to request an IP on the interface provided
-echo "Requesting new IP with $DHCPCLIENT"
-IPADDR="$(sudo $DHCPCLIENT $DHCPCLIENTOPTS $INTERFACE | grep -i 'bound')"
-echo "$IPADDR"
+printf "Requesting new IP with $DHCPCLIENT\n"
+sudo $DHCPCLIENT $DHCPCLIENTOPTS $INTERFACE
+printf "\n\n"
 
 # Checking for any internet connection. If nothing is returned, was successful.
-echo "Pinging 8.8.8.8 to check for connectivity"
+printf "Pinging 8.8.8.8 to check for connectivity\n\n"
 NETSTATS="$(ping -c 1 -I $INTERFACE 8.8.8.8 | grep 'transmitted')"
-echo "$NETSTATS\n"
+echo "$NETSTATS"
 
 # Checking for internet connection and working DNS. If nothing returned, was successful.
-echo "Pinging google.com to check for DNS"
+printf "Pinging google.com to check for DNS\n"
 NETSTATS="$(ping -c 1 $INTERFACE google.com | grep 'transmitted')"
 echo "$NETSTATS"
 
