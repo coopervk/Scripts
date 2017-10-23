@@ -10,8 +10,10 @@ WPACONFPATH="/etc/wpa_supplicant/wpaiit.conf"           # If changed after scrip
 # Start script body
 printf "Script starting...\n\n"
 
-printf "Requesting root privileges...\n"
-sudo printf "\n"
+printf "Requesting root privileges...\n\n"
+sudo printf ""
+
+printf "Checking for configuration file at $WPACONFPATH...\n\n"
 
 if [ ! -f "$WPACONFPATH" ]
 then

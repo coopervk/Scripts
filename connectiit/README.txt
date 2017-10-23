@@ -1,6 +1,6 @@
 VERSION
 
-V.1.0.0
+V.1.2.1
 
 --------------------
 DISCLAIMER
@@ -141,6 +141,8 @@ cvankampen@hawk.iit.edu), or my Telegram (gdynamics).
 --------------------
 OFFICIAL PATCH NOTES
 
-V.1.2.0
+V.1.2.1
 
 -Script is now BASH instead of just shell.
+-Display text for checking for configuration file.
+-Realize I forgot to update version number in the header
