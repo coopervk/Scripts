@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # Variables that the user may change as they desire
-INTERFACE="wlp3s0"                                            # The name of your wireless interface
+INTERFACE="wlp3s0"                                      # The name of your wireless interface
 MACADDR="$(cat /sys/class/net/$INTERFACE/address)"      # The MAC address you wish your wireless to use
-DHCPCLIENT="dhclient"                                   # The command which represents your DHCP service
-DHCPCLIENTOPTS="-v"                                     # The appropriate arguments for the dhcp. Empty if none.
+DHCPCLIENT=""                                   				# The command which represents your DHCP service
 WPACONFPATH="/etc/wpa_supplicant/wpaiit.conf"           # If changed after script has been run, there may be remaining garbage artifacts.
 
 # Start script body
@@ -36,6 +35,22 @@ then
 	printf "ctrl_interface=/var/run/wpa_supplicant\n\nnetwork={\n\tssid=\"IIT-Secure\"\n\tkey_mgmt=WPA-EAP IEEE8021X\n\teap=PEAP\n\tauth_alg=OPEN\n\tidentity=\"$USERNAME\"\n\tpassword=\"$PASSWORD\"\n\tphase1=\"tls_disable_tlsv1_2=1\"\n\tphase2=\"auth=MSCHAPv2\"\n\tpriority=9\n}" > $WPACONFPATH
 fi
 
+if ! [ "$DHCLIENT" ]
+then
+	printf "You have not specified a DCHP client! Attempting autodetection...\n"
+	if ! [ "$(sudo dhclient --version | grep 'command not found')" ]
+	then
+		DHCPCLIENT="dhclient"
+	elif ! [ "$(sudo dhcpcd --version | grep 'command not found')" ]
+	then
+		DHCPCLIENT="dhcpcd"
+	else
+		printf "ERROR! No client found! Quitting...\n"
+		exit
+	fi
+	printf "\n"
+fi	
+
 # Ending previous instances in order to remove chance of errors
 printf "Killing previous instances of wpa_supplicant and $DHCPCLIENT\n"
 sudo killall wpa_supplicant
@@ -58,7 +73,7 @@ printf "\n"
 
 # Using your DHCP Client to request an IP on the interface provided
 printf "Requesting new IP with $DHCPCLIENT\n"
-sudo $DHCPCLIENT $DHCPCLIENTOPTS $INTERFACE
+sudo $DHCPCLIENT $INTERFACE
 printf "\n\n"
 
 # Checking for any internet connection. If nothing is returned, was successful.

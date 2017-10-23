@@ -1,12 +1,11 @@
 VERSION
 
-V.1.2.1
+V.1.4.0
 
 --------------------
 DISCLAIMER
 
--This BASH script was created by Cooper Van Kampen and released to the public on 
-Saturday, October 14th, 2017.
+-This BASH script was created by Cooper Van Kampen
 -This BASH script is licensed under the GPLv3
 -This BASH script was created with the intent of providing a simple, immediate way 
 to connect to IIT-Secure.
@@ -26,7 +25,10 @@ TO START:
 -You need these programs installed:
 	-wpa_supplicant
 	-A DHCP Client
-		-Typically dhclient by default, but possibly dhcpcd or another client.
+		-Typically dhclient if you are, but possibly dhcpcd or another client
+		Debian-based, but dhcpcd is also quite common.
+			-Script will attempt to detect one of these two if you do
+			not edit the configuration variables.
 	-The sudo command and sudo privileges
 		-This may change in the future.
 	-The ip command suite
@@ -79,11 +81,10 @@ CONFIGURE:
 	-DHCP client
 		-Allows you to request an IP address from the network after you
 		connect to it via this script or use of another tool.
-		-By default, chose dhclient simply because it is the most common
-			-Other choices may include dhcpcd
-		-If you do not understand, leave the value as is.
-			-If this does not work, ensure that dhclient (or your
-			preferred client) is installed.
+		-If you do not understand, that is ok.
+			-If the script throws an error message and quits, you
+			need to search the internet to find out how to install
+			one of these two DHCP clients.
 	-DHCP client arguments
 		-Allows you to have more granular control over the output that you
 		see as the script runs.
@@ -141,8 +142,6 @@ cvankampen@hawk.iit.edu), or my Telegram (gdynamics).
 --------------------
 OFFICIAL PATCH NOTES
 
-V.1.2.1
+V.1.4.0
 
--Script is now BASH instead of just shell.
--Display text for checking for configuration file.
--Realize I forgot to update version number in the header
+-Script now has automatic DHCP client detection (for just dhclient and dhcpcd since they are the most common) if you do not specify a client
