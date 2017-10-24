@@ -1,6 +1,6 @@
 VERSION
 
-V.1.6.0
+V.1.6.1
 
 --------------------
 DISCLAIMER
@@ -29,10 +29,8 @@ TO START:
 		Debian-based, but dhcpcd is also quite common.
 			-Script will attempt to detect one of these two if you do
 			not edit the configuration variables.
-	-The sudo command and sudo privileges
-		-This may change in the future.
-	-The ip command suite
-		-This may change in the future.
+	-The sudo command and sudo privilege.
+	-The ip or ifconfig network command suite
 
 PREPARATION:
 -To prepare this BASH script, you must have the ability to execute it. This can be 
@@ -122,8 +120,6 @@ here are some important things to remember:
 --------------------
 FUTURE POSSIBLE FEATURES
 
--Support for ifconfig
-	-Low difficulty, medium work, high impact
 -rfkill checking
 	-Medium difficulty, medium work, medium impact
 -Add checking for root account vs account that you need sudo
@@ -142,6 +138,6 @@ cvankampen@hawk.iit.edu), or my Telegram (gdynamics).
 --------------------
 OFFICIAL PATCH NOTES
 
-V.1.6.0
+V.1.6.1
 
--First step of attempting to add support for ifconfig
+-ifconfig support is now officially added! Check.

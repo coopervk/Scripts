@@ -39,10 +39,10 @@ fi
 if ! [ "$DHCLIENT" ]
 then
 	printf "You have not specified a DCHP client! Attempting autodetection...\n"
-	if ! [ "$(sudo dhclient --version | grep 'command not found')" ]
+	if ! [ "$(which dhclient)" ]
 	then
 		DHCPCLIENT="dhclient"
-	elif ! [ "$(sudo dhcpcd --version | grep 'command not found')" ]
+	elif ! [ "$(which dhcpcd)" ]
 	then
 		DHCPCLIENT="dhcpcd"
 	else
@@ -55,11 +55,14 @@ fi
 if ! [ "$NETCOM" ]
 then
 	printf "You have not specified a network command toolset! Attempting autodetection..."
-	if ! [ "$(sudo ip -V | grep 'command not found')" ]
+	if [ "$(which aa)" ]
 	then
 		NETCOM="ip"
+	elif [ "$(sudo which ifconfig)" ]
+	then
+		NETCOM="ifconfig"
 	fi
-	printf "\n\n"
+	printf "\n\n"	
 fi
 
 # Ending previous instances in order to remove chance of errors
@@ -77,6 +80,15 @@ then
 	sudo ip l s $INTERFACE a "$MACADDR"
 	printf "Putting interface up\n"
 	sudo ip l s $INTERFACE up
+	printf "\n"
+elif [ "$NETCOM" == "ifconfig" ]
+then
+	printf "Setting wireless interface down\n"
+	sudo ifconfig $INTERFACE down
+	printf "Changing MAC address of interface to $MACADDR\n"
+	sudo ifconfig $INTERFACE hw ether $MACADDR
+	printf "Putting interface up\n"
+	sudo ifconfig $INTERFACE up
 	printf "\n"
 fi
 
