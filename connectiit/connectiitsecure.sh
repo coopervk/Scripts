@@ -57,7 +57,7 @@ fi
 if ! [ "$NETCOM" ]
 then
 	printf "You have not specified a network command toolset! Attempting autodetection..."
-	if [ "$(which aa)" ]
+	if [ "$(which ip)" ]
 	then
 		NETCOM="ip"
 	elif [ "$(sudo which ifconfig)" ]
