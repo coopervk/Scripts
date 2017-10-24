@@ -118,33 +118,48 @@ start_dhcp_client() {
 	printf "\n\n"
 }
 
+# Tests to see if you have connection to the internet and DNS
 network_test() {
-	printf "Pinging 8.8.8.8 to check for connectivity\n\n"
-	NETSTATS="$(ping -c 1 -I $INTERFACE 8.8.8.8 | grep 'transmitted')"
-	echo "$NETSTATS"
-	printf "Pinging google.com to check for DNS\n"
-	NETSTATS="$(ping -c 1 -I $INTERFACE google.com | grep 'transmitted')"
-	echo "$NETSTATS"
+	INTERNETCON="$(ping -c 1 -w 1 -I $INTERFACE 8.8.8.8 | grep '0%')"
+	if ! [ "$INTERNETCON" ]
+	then
+		printf "0"
+		exit
+	fi
+	DNSRES="$(ping -c 1 -w 1 -I $INTERFACE google.com | grep '0%')"
+	if ! [ "$DNSRES" ]
+	then
+		printf "0"
+		exit
+	fi
+	printf "1"
 }
 # Script body
 printf "Script starting...\n\n"
-request_root
-
-gen_config_file
-
-check_dhcp_client
-
-detect_network_tools
-
-reset_networking
-
-reinit_interface
-
-start_wpa_supplicant
-
-start_dhcp_client
-
-network_test
+if [ $(network_test) == "0" ]
+then
+	request_root
+	gen_config_file
+	check_dhcp_client
+	detect_network_tools
+	reset_networking
+	reinit_interface
+	start_wpa_supplicant
+	sleep 0.5s
+	start_dhcp_client
+	while [ $(network_test) == "0" ]
+	do
+		printf "Connection failed! Trying again...\n"
+		reset_networking
+		reinit_interface
+		start_wpa_supplicant
+		sleep 0.5s
+		start_dhcp_client
+	done
+	printf "Connected! Enjoy~\n"
+else
+	printf "You are already connected to WiFi!\n"
+fi
 
 exit
 

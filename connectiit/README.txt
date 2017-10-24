@@ -1,6 +1,6 @@
 VERSION
 
-V.1.8.1
+V.1.10.1
 
 --------------------
 DISCLAIMER
@@ -138,7 +138,7 @@ cvankampen@hawk.iit.edu), or my Telegram (gdynamics).
 --------------------
 OFFICIAL PATCH NOTES
 
-V.1.8.1
+V.1.10.1
 
--Put script in a function-based format to allow for easier readability and modularity for future expansions
--Fixed typo in the DNS check
+-Added checking for connection at start and loop connect if connection fails
+-Add timeout to pings
