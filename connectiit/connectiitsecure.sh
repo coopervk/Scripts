@@ -36,6 +36,7 @@ then
 	printf "ctrl_interface=/var/run/wpa_supplicant\n\nnetwork={\n\tssid=\"IIT-Secure\"\n\tkey_mgmt=WPA-EAP IEEE8021X\n\teap=PEAP\n\tauth_alg=OPEN\n\tidentity=\"$USERNAME\"\n\tpassword=\"$PASSWORD\"\n\tphase1=\"tls_disable_tlsv1_2=1\"\n\tphase2=\"auth=MSCHAPv2\"\n\tpriority=9\n}" > $WPACONFPATH
 fi
 
+# Check for a DHCP client if none have been specified
 if ! [ "$DHCLIENT" ]
 then
 	printf "You have not specified a DCHP client! Attempting autodetection...\n"
@@ -52,6 +53,7 @@ then
 	printf "\n"
 fi	
 
+# Check for network command suites if none have been specified
 if ! [ "$NETCOM" ]
 then
 	printf "You have not specified a network command toolset! Attempting autodetection..."
