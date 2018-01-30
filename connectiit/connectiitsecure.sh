@@ -34,7 +34,7 @@ gen_config_file() {
 		# Start configuration file generation
 		sudo touch $WPACONFPATH
 		sudo chown $(whoami) $WPACONFPATH
-		printf "ctrl_interface=/var/run/wpa_supplicant\n\nnetwork={\n\tssid=\"IIT-Secure\"\n\tkey_mgmt=WPA-EAP IEEE8021X\n\teap=PEAP\n\tauth_alg=OPEN\n\tidentity=\"$USERNAME\"\n\tpassword=\"$PASSWORD\"\n\tphase1=\"tls_disable_tlsv1_2=1\"\n\tphase2=\"auth=MSCHAPv2\"\n\tpriority=9\n}" > $WPACONFPATH
+		printf "ctrl_interface=/var/run/wpa_supplicant\n\nnetwork={\n\tssid=\"IIT-Secure\"\n\tkey_mgmt=WPA-EAP IEEE8021X\n\teap=PEAP\n\tauth_alg=OPEN\n\tidentity=\"$USERNAME\"\n\tpassword=\"$PASSWORD\"\n\tphase1=\"tls_disable_tlsv1_2=1\"\n\tphase2=\"auth=MSCHAPV2\"\n\tpriority=9\n}" > $WPACONFPATH
 	fi
 }
 
