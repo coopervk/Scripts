@@ -1,6 +1,6 @@
 VERSION
 
-V.1.10.1
+V.1.11.1
 
 --------------------
 DISCLAIMER
@@ -138,7 +138,15 @@ cvankampen@hawk.iit.edu), or my Telegram (gdynamics).
 --------------------
 OFFICIAL PATCH NOTES
 
-V.1.10.1
+V.1.11.1
 
--Added checking for connection at start and loop connect if connection fails
--Add timeout to pings
+-Fixed several typo errors, including but not limited to:
+	-Using ping to check connection.
+		-" 0%" instead of "0%"
+	-MSCHAP typo
+		-"MSCHAPV2" instead of "MSCHAPv2"
+-Fixed logical error with checking for DHCP Client
+	-Remove bangs for negation
+	-Not sure if this was always a problem? Didn't see issue on Debian
+	-If this is wrong on your system, please, create a bug report
+	-This is why version is unstable
