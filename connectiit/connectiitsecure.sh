@@ -120,13 +120,13 @@ start_dhcp_client() {
 
 # Tests to see if you have connection to the internet and DNS
 network_test() {
-	INTERNETCON="$(ping -c 1 -w 1 -I $INTERFACE 8.8.8.8 | grep '0%')"
+	INTERNETCON="$(ping -c 1 -w 1 -I $INTERFACE 8.8.8.8 | grep ' 0%')"
 	if ! [ "$INTERNETCON" ]
 	then
 		printf "0"
 		exit
 	fi
-	DNSRES="$(ping -c 1 -w 1 -I $INTERFACE google.com | grep '0%')"
+	DNSRES="$(ping -c 1 -w 1 -I $INTERFACE google.com | grep ' 0%')"
 	if ! [ "$DNSRES" ]
 	then
 		printf "0"
