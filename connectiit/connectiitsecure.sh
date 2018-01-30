@@ -43,10 +43,10 @@ check_dhcp_client() {
 	if ! [ "$DHCLIENT" ]
 	then
 		printf "You have not specified a DCHP client! Attempting autodetection...\n"
-		if ! [ "$(which dhclient)" ]
+		if [ "$(which dhclient)" ]
 		then
 			DHCPCLIENT="dhclient"
-		elif ! [ "$(which dhcpcd)" ]
+		elif [ "$(which dhcpcd)" ]
 		then
 			DHCPCLIENT="dhcpcd"
 		else
