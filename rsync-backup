@@ -47,10 +47,10 @@ if [ "${1: -1}" != "/" ] || [ "${2: -1}" != "/" ]; then
 fi
 
 # Confirm command if not in silent mode
+command="rsync -av --delete --backup --backup-dir $2trash --exclude "\$RECYCLE.BIN" $1 $2"
 if [ "$3" == "--silent" ] || [ "$3" == "-s" ]; then
 	echo "Proceeding silently (without prompt)"
 else
-	command="rsync -av --delete --backup --backup-dir $2trash --exclude "\$RECYCLE.BIN" $1 $2"
 	echo "Press enter to confirm command, Ctrl-C to exit"
 	printf "$command"
 	read
