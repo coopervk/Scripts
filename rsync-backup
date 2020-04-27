@@ -57,7 +57,7 @@ else
 fi
 
 # Execute command
-#eval $command
+eval $command
 
 # Good exit
 exit 0
