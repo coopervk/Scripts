@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# ERR 1: Did not provide two arguments
+if [ $# -lt 2 ]; then
+	echo "Usage: ./backup FROM TO"
+	echo "Optional: Include --silent or -s as the last argument to remove need to confirm command"
+	exit 1
+fi
+
+# ERR 2: Did not provide a valid path
+if [ ! -d $1 ] || [ ! -d $2 ]; then
+	echo "Invalid path provided"
+	exit 2
+fi
+
+# ERR 3: Did not provide a path with trailing slash
+if [ "${1: -1}" != "/" ] || [ "${2: -1}" != "/" ]; then
+	echo "Paths must be ended with /"
+	exit 3
+fi
+
+# Confirm command if not in silent mode
+if [ "$3" == "--silent" ] || [ "$3" == "-s" ]; then
+	echo "Proceeding silently (without prompt)"
+else
+	command="rsync -av --delete --backup --backup-dir $2trash --exclude "\$RECYCLE.BIN" $1 $2"
+	echo "Press enter to confirm command, Ctrl-C to exit"
+	printf "$command"
+	read
+fi
+
+# Execute command
+#eval $command
+
+# Good exit
+exit 0
