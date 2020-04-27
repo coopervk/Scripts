@@ -25,6 +25,7 @@
 # ...a second --exclude "MOUNTDIR" in the command
 # Directories must have trailing slash
 # You must put the directories THEN the silent argument if you wish to use silent mode
+# Best place for this script is probably /usr/local/sbin
 
 # ERR 1: Did not provide two arguments
 if [ $# -lt 2 ]; then
